@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [text, setText] = useState('');
+ 
+
+  useEffect(() => {
+    
+      console.log("ui rendering");
+     
+  }, [text]); // Empty dependency array ensures this effect runs only once on initial mount
+
+  function changeHandler(event) {
+    setText(event.target.value);
+    console.log(text);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input type="text" onChange={changeHandler} />
     </div>
   );
 }
