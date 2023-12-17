@@ -1,7 +1,9 @@
 import react from "react";
 const App=()=>{
     return (<div>
-        App
+        <Navbar/>
+        <Filter/>
+        <Cards/>
     </div>)
 };
 
