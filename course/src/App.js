@@ -2,38 +2,53 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Filter from "./components/Filter";
 import Cards from "./components/Cards";
+import Spinner from "./components/s";
 import { apiUrl, filterData } from "./data";
 import { toast } from "react-toastify";
 
 const App = () => {
-    const [courses, setCourses] = useState([]); // Initialize courses state with an empty array
+  const [courses, setCourses] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState(filterData[0].title);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await fetch(apiUrl);
-                if (!res.ok) {
-                    throw new Error("Failed to fetch");
-                }
-                const output = await res.json();
-                console.log(output.data);
+  async function fetchData() {
+    setLoading(true);
+    try {
+      let response = await fetch(apiUrl);
+      let output = await response.json();
 
-                // Update the 'courses' state with fetched data
-                setCourses(output.data);
-            } catch (error) {
-                toast.error("Something went wrong");
-            }
-        };
-        fetchData();
-    }, []);
+      setCourses(output.data);
+    } catch (error) {
+      toast.error("Network failure");
+    }
+    setLoading(false);
+  }
 
-    return (
-        <div>
-            <Navbar />
-            <Filter filterData={filterData} />
-            <Cards courses={courses} />
-        </div>
-    );
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <div>
+        <Navbar />
+      </div>
+      <div>
+        <Filter
+          filterData={filterData}
+          category={category}
+          setCategory={setCategory}
+        />
+      </div>
+      <div>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <Cards courses={courses} category={category} />
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default App;

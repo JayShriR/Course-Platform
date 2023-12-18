@@ -1,23 +1,25 @@
 import React from "react";
 import Card from "./Card";
-const Cards=( {courses} )=>{
+
+const Cards = ({ courses }) => {
     const getCourses = () => {
-        let allCourses=[];
-         Object.values.array.forEach( (courseCategory) => {
-            courseCategory.forEach((course)=>{
+        let allCourses = [];
+        Object.values(courses).forEach((courseCategory) => {
+            courseCategory.forEach((course) => {
                 allCourses.push(course);
-            })
-         })
-         return allCourses;
-    }
+            });
+        });
+        return allCourses;
+    };
+
     return (
         <div>
-            {getCourses().map((course) => (
-        <Card
-          
-        />
-      ))}
+            {getCourses().map((course) => {
+                return<Card course={course} />
+            })
+            }
         </div>
-    )
-}
+    );
+};
+
 export default Cards;
