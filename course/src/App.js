@@ -1,32 +1,39 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
-import Filter from "./components/FIlter";
+import Filter from "./components/Filter";
 import Cards from "./components/Cards";
 import { apiUrl, filterData } from "./data";
 import { toast } from "react-toastify";
 
-    const App=()=>{
-        const [courses,setCourses]=useState();
-        useEffect( () => {
-            const fetchdata = async() => {
-                try{
-                    const res= await fetch(apiUrl);
-                    const output= res.json;
-                    console.log(output.data);
+const App = () => {
+    const [courses, setCourses] = useState([]); // Initialize courses state with an empty array
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await fetch(apiUrl);
+                if (!res.ok) {
+                    throw new Error("Failed to fetch");
                 }
-                catch(error){
-                    toast.error("something went wrong");
-                }
+                const output = await res.json();
+                console.log(output.data);
+
+                // Update the 'courses' state with fetched data
+                setCourses(output.data);
+            } catch (error) {
+                toast.error("Something went wrong");
             }
-            fetchdata();
-        },[])
-    return (<div>
-        <Navbar/>
-        <Filter
-            filterData={filterData}
-        />
-        <Cards/>
-    </div>)
+        };
+        fetchData();
+    }, []);
+
+    return (
+        <div>
+            <Navbar />
+            <Filter filterData={filterData} />
+            <Cards courses={courses} />
+        </div>
+    );
 };
 
 export default App;
