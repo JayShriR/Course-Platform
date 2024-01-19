@@ -1,6 +1,5 @@
 import React from "react";
 import Card from "./Card";
-
 const Cards = ({ courses }) => {
     const getCourses = () => {
         let allCourses = [];
